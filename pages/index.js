@@ -1,14 +1,41 @@
-import { useSocket } from "@/context/socket";
-import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
+import styles from "@/styles/home.module.css";
+import { useState } from "react";
 
 export default function Home() {
-  const socket = useSocket();
+  const router = useRouter();
+  const [roomId, setRoomId] = useState("");
 
-  useEffect(() => {
-    socket?.on("connect", () => {
-      console.log(socket?.id); // x8WIv7-mJelg7on_ALbx
-    });
-  }, [socket]);
+  const createAndJoin = () => {
+    const roomId = uuidv4();
+    router.push(`/${roomId}`);
+  };
 
-  return <h1>Hello NextJS</h1>;
+  const joinRoom = () => {
+    if (roomId) router.push(`/${roomId}`);
+    else {
+      alert("Please provide a valid Room Id");
+    }
+  };
+
+  return (
+    <div className={styles.homeContainer}>
+      <h1>Google Meet Clone</h1>
+      <div className={styles.enterRoom}>
+        <input
+          type="text"
+          value={roomId}
+          onChange={(e) => setRoomId(e?.target?.value)}
+          placeholder="Enter RoomID"
+        />
+        <button onClick={joinRoom}>Join Room</button>
+      </div>
+      <span className={styles.separatorText}>
+        -------------- OR -----------------
+      </span>
+
+      <button onClick={createAndJoin}>Create a New Room</button>
+    </div>
+  );
 }
