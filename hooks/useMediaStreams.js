@@ -12,7 +12,7 @@ const useMediaStreams = () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           audio: true,
-          video: { width: 1280, height: 720 },
+          video: true,
         });
         console.log("Setting your stream");
         setState(stream);
